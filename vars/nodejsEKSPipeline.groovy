@@ -241,6 +241,3 @@ def call(configMap) {
         }
     }
 }
-
-
-}
