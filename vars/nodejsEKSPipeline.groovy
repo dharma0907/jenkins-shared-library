@@ -158,8 +158,7 @@ def call(configMap) {
                                 utils.updateCommitStatus("failure", "image build failed", "build-image")
                                 throw e
                         } 
-                    } 
-                       
+                                  
                 }        
             }
         }
@@ -240,4 +239,6 @@ def call(configMap) {
             echo 'I will Run when it is failed'
         }
     }
+}
+
 }
