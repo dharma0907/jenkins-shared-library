@@ -126,7 +126,7 @@ def call(configMap) {
                                     echo "✅ No High/Critical dependency alerts found."
                                 fi
                             '''
-                            utils.updateCommitStatus("Passed", "library scan success", "library-scan")
+                            utils.updateCommitStatus("success", "library scan success", "library-scan")
                         }
                     }
                     catch (Exception e){
