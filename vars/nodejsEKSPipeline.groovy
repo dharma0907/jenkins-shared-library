@@ -151,8 +151,9 @@ def call(configMap) {
                                 docker tag ${project}/${component}:${appVersion} ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
                             
                                 """
-                                utils.updateCommitStatus("success", "Build docker success", "build-image")
+                                
                             }
+                            utils.updateCommitStatus("success", "Build docker success", "build-image")
                         }
                         catch(Exception e){
                                 utils.updateCommitStatus("failure", "image build failed", "build-image")
