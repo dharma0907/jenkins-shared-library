@@ -48,10 +48,20 @@ def call(configMap) {
          stage('Unit Test') {
             steps {
                 script {
-                    sh """
-                        echo "testing"
+                    try{
 
-                    """
+                        sh """
+                          npm test
+
+                        """
+                        utils.updateCommitStatus("success", "unit tests are successful", "unit-tests")
+
+                    }
+                    catch(Exception step){
+                         utils.updateCommitStatus("Failed", "unit tests are failed", "unit-tests")
+
+                    }
+                   
                 }
             }
         }
@@ -164,7 +174,7 @@ def call(configMap) {
                         withAWS(credentials: 'aws-creds', region: 'us-east-1') {
                             sh """
                             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
-                            docker push ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
+                            docker push ${project}/${component}:${appVersion} ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
                             """
                         }
                 }        
