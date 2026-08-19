@@ -239,21 +239,25 @@ def call(configMap) {
             }
 
         }
+        stage('api-testing'){
+            steps{
+                script(
+                    sh """
+                      build job: 'catalogue-api-tests',
+                      parameters: [
+                          string(name: 'NAMESPACE', value: 'roboshop-dev'),
+                          string(name: 'COMMKIT_ID', value: 'roboshop-dev')
+                          booleanParam(name: 'RUN_TESTS', value: "${env.GIT_COMMIT}")
+                      ],
+                      wait: true,
+                      propagate: true,
+                      quietPeriod: 10
+                       
+                    """   
+                )
+            }
+        }
 
-        // stage('Deploy') {
-        //     when {
-        //         // Evaluates the boolean parameter directly
-        //         expression { "${params.DEPLOY}" == "true" }
-        //     }
-        //     /* input {
-        //         message "Should we continue?"
-        //         ok "Yes, we should."
-        //         submitter "alice,bob"
-        //         parameters {
-        //             string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-        //         }
-        //     } */
-        // }
     }
 
     post { 
