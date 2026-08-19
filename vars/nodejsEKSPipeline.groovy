@@ -246,8 +246,7 @@ def call(configMap) {
                       build job: 'catalogue-api-tests',
                       parameters: [
                           string(name: 'NAMESPACE', value: 'roboshop-dev'),
-                          string(name: 'COMMKIT_ID', value: 'roboshop-dev')
-                          booleanParam(name: 'RUN_TESTS', value: "${env.GIT_COMMIT}")
+                          string(name: 'COMMIT_ID', value: "${env.GIT_COMMIT}")
                       ],
                       wait: true,
                       propagate: true,
