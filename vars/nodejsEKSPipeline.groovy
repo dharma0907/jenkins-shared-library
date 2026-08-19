@@ -243,7 +243,7 @@ def call(configMap) {
             steps{
                 script{
                     try{
-                      build job: 'ROBOSHOP/catalogue-api-tests', 
+                      build job: 'ROBOSHOP/catalogue-api-test', 
                       parameters: [
                           string(name: 'NAMESPACE', value: 'roboshop-dev'),
                           string(name: 'COMMIT_ID', value: "${env.GIT_COMMIT}")
