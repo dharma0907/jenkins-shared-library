@@ -242,7 +242,6 @@ def call(configMap) {
         stage('api-testing'){
             steps{
                 script(
-                    sh """
                       build job: 'catalogue-api-tests',
                       parameters: [
                           string(name: 'NAMESPACE', value: 'roboshop-dev'),
@@ -252,7 +251,6 @@ def call(configMap) {
                       propagate: true,
                       quietPeriod: 10
                        
-                    """   
                 )
             }
         }
