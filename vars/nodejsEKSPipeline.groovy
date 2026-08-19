@@ -241,8 +241,9 @@ def call(configMap) {
         }
         stage('api-testing'){
             steps{
-                script(
-                      build job: 'catalogue-api-tests',
+                script{
+                    try{
+                      build job: 'ROBOSHOP/catalogue-api-tests', # thi is full name in the jenkisnfolder
                       parameters: [
                           string(name: 'NAMESPACE', value: 'roboshop-dev'),
                           string(name: 'COMMIT_ID', value: "${env.GIT_COMMIT}")
@@ -250,8 +251,16 @@ def call(configMap) {
                       wait: true,
                       propagate: true,
                       quietPeriod: 10
+
+                      utils.updateCommitStatus("success", "api tests success", "api-tests")
                        
-                )
+                    }
+                    catch(Exception e){
+                            utils.updateCommitStatus("failure", "api tests failed", "api-tests")
+                            throw e
+                        }
+                    
+                }
             }
         }
 
