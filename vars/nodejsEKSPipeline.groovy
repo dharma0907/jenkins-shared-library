@@ -146,9 +146,9 @@ def call(configMap) {
                         // 'aws-global-creds' is the ID of your Jenkins credential entry
                             withAWS(credentials: 'aws-creds', region: 'us-east-1') {
                                 sh """
-                                aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
-                                docker build -t ${project}/${component}:${appVersion} .
-                                docker tag ${project}/${component}:${appVersion} ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
+                                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
+                                    docker build -t ${project}/${component}:${appVersion} .
+                                    docker tag ${project}/${component}:${appVersion} ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
                             
                                 """
                                 
