@@ -249,8 +249,7 @@ def call(configMap) {
                           string(name: 'COMMIT_ID', value: "${env.GIT_COMMIT}")
                       ],
                       wait: true,
-                      propagate: true,
-                      quietPeriod: 10
+                      propagate: true
 
                       utils.updateCommitStatus("success", "api tests success", "api-tests")
                        
