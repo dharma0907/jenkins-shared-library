@@ -195,19 +195,19 @@ def call(configMap) {
                 
                 script {
                      try{
-                        // 'aws-global-creds' is the ID of your Jenkins credential entry
-                        withAWS(credentials: 'aws-creds', region: 'us-east-1') {
-                            sh """
-                            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
-                            docker push  ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
-                            """
+                            // 'aws-global-creds' is the ID of your Jenkins credential entry
+                            withAWS(credentials: 'aws-creds', region: 'us-east-1') {
+                                sh """
+                                aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com
+                                docker push  ${ACC_ID}.dkr.ecr.us-east-1.amazonaws.com/${project}/${component}:${appVersion}
+                                """
+                            }
+                            utils.updateCommitStatus("success", "image push success", "push-image")
                         }
-                        utils.updateCommitStatus("success", "image push success", "push-image")
                         catch (Exception e) {
                             utils.updateCommitStatus("failure", "image push failed", "push-image")
                             throw e
                         }
-                     }
              
                 }        
             }
