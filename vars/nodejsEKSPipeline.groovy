@@ -239,26 +239,50 @@ def call(configMap) {
             }
 
         }
-        stage('api-testing'){
-            steps{
-                script{
-                    try{
-                      build job: 'ROBOSHOP/catalogue-api-test', 
-                      parameters: [
-                          string(name: 'NAMESPACE', value: 'roboshop-dev'),
-                          string(name: 'COMMIT_ID', value: "${env.GIT_COMMIT}")
-                      ],
-                      wait: true,
-                      propagate: true
+        stage('api-testing') {
+            steps {
+                script {
 
-                      utils.updateCommitStatus("success", "api tests success", "api-tests")
-                       
+                    def apiTestBuild = build(
+                        job: 'ROBOSHOP/catalogue-api-test',
+                        parameters: [
+                            string(name: 'NAMESPACE', value: 'roboshop-dev'),
+                            string(name: 'COMMIT_ID', value: "${env.GIT_COMMIT}")
+                        ],
+                        wait: true,
+                        propagate: false
+                    )
+
+                    echo "API test build result: ${apiTestBuild.result}"
+
+                    if (apiTestBuild.result == 'SUCCESS') {
+
+                        utils.updateCommitStatus(
+                            "success",
+                            "api tests success",
+                            "api-tests"
+                        )
+
+                    } else if (apiTestBuild.result == 'ABORTED') {
+
+                        utils.updateCommitStatus(
+                            "error",
+                            "api tests aborted",
+                            "api-tests"
+                        )
+
+                        error("API test job was aborted")
+
+                    } else {
+
+                        utils.updateCommitStatus(
+                            "failure",
+                            "api tests failed",
+                            "api-tests"
+                        )
+
+                        error("API tests failed. Result: ${apiTestBuild.result}")
                     }
-                    catch(Exception e){
-                            utils.updateCommitStatus("failure", "api tests failed", "api-tests")
-                            throw e
-                        }
-                    
                 }
             }
         }
